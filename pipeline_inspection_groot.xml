@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="MainTree">
+    <Sequence>
+      <SubTree ID="SearchPipelineTree"
+               _autoremap="false"/>
+      <InspectPipeline/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SearchPipelineTree">
+    <Inverter>
+      <ReactiveSequence>
+        <Inverter>
+          <PipelineFound/>
+        </Inverter>
+        <RetryUntilSuccessful num_attempts="-1">
+          <Fallback>
+            <ReactiveSequence>
+              <WaterVisibilityHigh/>
+              <SearchHigh/>
+            </ReactiveSequence>
+            <ReactiveSequence>
+              <WaterVisibilityLow/>
+              <SearchLow/>
+            </ReactiveSequence>
+          </Fallback>
+        </RetryUntilSuccessful>
+      </ReactiveSequence>
+    </Inverter>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="InspectPipeline"
+            editable="true"/>
+    <Condition ID="PipelineFound"
+               editable="true"/>
+    <Action ID="SearchHigh"
+            editable="true"/>
+    <Action ID="SearchLow"
+            editable="true"/>
+    <Condition ID="WaterVisibilityHigh"
+               editable="true"/>
+    <Condition ID="WaterVisibilityLow"
+               editable="true"/>
+  </TreeNodesModel>
+
+</root>
