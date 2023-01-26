@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="docking">
-    <include path="docking.xml"/>
+    <include path="bts/docking.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="DetectMarker" editable="true"/>
-        <Action ID="Home" editable="true"/>
         <Action ID="Dock" editable="true"/>
+        <Action ID="Home" editable="true"/>
+        <Condition ID="IsMarkerDetected" editable="true"/>
+        <Action ID="SearchMarker" editable="true"/>
+        <Action ID="SelectNonVectorizedController" editable="true"/>
+        <Action ID="UpdatePoseEstimation" editable="true"/>
+        <Condition ID="isNonVectorizedController" editable="true"/>
     </TreeNodesModel>
 </root>

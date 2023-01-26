@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="DetectMarkerTree">
+    <ReactiveFallback>
+      <Sequence>
+        <IsMarkerDetected/>
+        <UpdatePoseEstimation/>
+      </Sequence>
+      <Fallback>
+        <Sequence>
+          <Inverter>
+            <isNonVectorizedController/>
+          </Inverter>
+          <SelectNonVectorizedController/>
+        </Sequence>
+        <SearchMarker/>
+      </Fallback>
+    </ReactiveFallback>
+  </BehaviorTree>
+
+  <BehaviorTree ID="HomingTree">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
   <BehaviorTree ID="MainTree">
     <Sequence>
       <Home/>
@@ -12,10 +34,20 @@
   <TreeNodesModel>
     <Action ID="DetectMarker"
             editable="true"/>
-    <Action ID="Home"
-            editable="true"/>
     <Action ID="Dock"
             editable="true"/>
+    <Action ID="Home"
+            editable="true"/>
+    <Condition ID="IsMarkerDetected"
+               editable="true"/>
+    <Action ID="SearchMarker"
+            editable="true"/>
+    <Action ID="SelectNonVectorizedController"
+            editable="true"/>
+    <Action ID="UpdatePoseEstimation"
+            editable="true"/>
+    <Condition ID="isNonVectorizedController"
+               editable="true"/>
   </TreeNodesModel>
 
 </root>
