@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4" project_name="docking">
+    <include path="docking.xml"/>
+    <!-- Description of Node Models (used by Groot) -->
+    <TreeNodesModel>
+        <Action ID="DetectMarker" editable="true"/>
+        <Action ID="Home" editable="true"/>
+        <Action ID="Dock" editable="true"/>
+    </TreeNodesModel>
+</root>

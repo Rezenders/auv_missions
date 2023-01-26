@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="MainTree">
+    <Sequence>
+      <Home/>
+      <DetectMarker/>
+      <Dock/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="DetectMarker"
+            editable="true"/>
+    <Action ID="Home"
+            editable="true"/>
+    <Action ID="Dock"
+            editable="true"/>
+  </TreeNodesModel>
+
+</root>
