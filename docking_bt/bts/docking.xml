@@ -6,48 +6,70 @@
         <IsMarkerDetected/>
         <UpdatePoseEstimation/>
       </Sequence>
-      <Fallback>
-        <Sequence>
-          <Inverter>
-            <isNonVectorizedController/>
-          </Inverter>
+      <ReactiveSequence>
+        <Fallback>
+          <IsCameraOn/>
+          <SwitchCameraOn/>
+        </Fallback>
+        <Fallback>
+          <IsNonVectorizedController/>
           <SelectNonVectorizedController/>
-        </Sequence>
+        </Fallback>
         <SearchMarker/>
-      </Fallback>
+      </ReactiveSequence>
     </ReactiveFallback>
   </BehaviorTree>
 
   <BehaviorTree ID="HomingTree">
-    <AlwaysSuccess/>
+    <ReactiveSequence>
+      <Fallback>
+        <IsVectorizedController/>
+        <SelectVectorizedController/>
+      </Fallback>
+      <ReactiveFallback>
+        <IsUSBLGood/>
+        <SearchGoodUSBL/>
+      </ReactiveFallback>
+      <Home/>
+    </ReactiveSequence>
   </BehaviorTree>
 
   <BehaviorTree ID="MainTree">
     <Sequence>
-      <Home/>
-      <DetectMarker/>
+      <SubTree ID="HomingTree"/>
+      <SubTree ID="DetectMarkerTree"/>
       <Dock/>
     </Sequence>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <Action ID="DetectMarker"
-            editable="true"/>
     <Action ID="Dock"
             editable="true"/>
     <Action ID="Home"
             editable="true"/>
+    <Condition ID="IsCameraOn"
+               editable="true"/>
     <Condition ID="IsMarkerDetected"
                editable="true"/>
+    <Condition ID="IsNonVectorizedController"
+               editable="true"/>
+    <Condition ID="IsUSBLGood"
+               editable="true"/>
+    <Condition ID="IsVectorizedController"
+               editable="true"/>
+    <Action ID="SearchGoodUSBL"
+            editable="true"/>
     <Action ID="SearchMarker"
             editable="true"/>
     <Action ID="SelectNonVectorizedController"
             editable="true"/>
+    <Action ID="SelectVectorizedController"
+            editable="true"/>
+    <Action ID="SwitchCameraOn"
+            editable="true"/>
     <Action ID="UpdatePoseEstimation"
             editable="true"/>
-    <Condition ID="isNonVectorizedController"
-               editable="true"/>
   </TreeNodesModel>
 
 </root>
