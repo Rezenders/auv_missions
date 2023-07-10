@@ -1,0 +1,11 @@
+<root>
+    <TreeNodesModel>
+        <Condition ID="MockEnoughBattery"/>
+        <Action ID="MockInspectPipeline"/>
+        <Condition ID="MockPipelineFound"/>
+        <Condition ID="MockPipelineInspected"/>
+        <Action ID="MockRechargeBattery"/>
+        <Action ID="MockSearchPipeline"/>
+    </TreeNodesModel>
+</root>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="MainTree">
+    <ReactiveFallback>
+      <ReactiveSequence>
+        <MockPipelineInspected/>
+        <MockRechargeBattery/>
+      </ReactiveSequence>
+      <ReactiveSequence>
+        <MockPipelineFound/>
+        <MockEnoughBattery/>
+        <ReactiveFallback>
+          <MockPipelineInspected/>
+          <MockInspectPipeline/>
+        </ReactiveFallback>
+      </ReactiveSequence>
+      <ReactiveSequence>
+        <MockEnoughBattery/>
+        <ReactiveFallback>
+          <MockPipelineFound/>
+          <MockSearchPipeline/>
+        </ReactiveFallback>
+      </ReactiveSequence>
+      <ReactiveSequence>
+        <Inverter>
+          <MockEnoughBattery/>
+        </Inverter>
+        <MockRechargeBattery/>
+      </ReactiveSequence>
+    </ReactiveFallback>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="MockEnoughBattery"
+               editable="true"/>
+    <Action ID="MockInspectPipeline"
+            editable="true"/>
+    <Condition ID="MockPipelineFound"
+               editable="true"/>
+    <Condition ID="MockPipelineInspected"
+               editable="true"/>
+    <Action ID="MockRechargeBattery"
+            editable="true"/>
+    <Action ID="MockSearchPipeline"
+            editable="true"/>
+  </TreeNodesModel>
+
+</root>
