@@ -30,6 +30,7 @@
 #include "suave_bt/mock_pipeline_found.hpp"
 #include "suave_bt/mock_pipeline_inspected.hpp"
 #include "suave_bt/mock_enough_battery.hpp"
+#include "suave_bt/is_task_feasible.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -56,11 +57,15 @@ int main(int argc, char * argv[])
 	factory.registerSimpleCondition("MockPipelineInspected",
     std::bind(&MockPipelineInspected::pipeline_inspected, mock_pipeline_inspected));
 
+  // factory.registerSimpleCondition("IsTaskFeasible", std::bind(&IsTaskFeasible::tick));
+  // factory.registerFromPlugin(loader.getOSName("is_task_feasible_bt_node"));
+  factory.registerNodeType<IsTaskFeasible>("IsTaskFeasible");
+
   std::string pkgpath = ament_index_cpp::get_package_share_directory("suave_bt");
   std::string xml_file = pkgpath + "/bts/mock.xml";
 
   auto blackboard = BT::Blackboard::create();
-  blackboard->set("node", node);
+  blackboard->set<rclcpp::Node::SharedPtr>("node", node);
 
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
 

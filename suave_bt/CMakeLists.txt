@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(suave_bt)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -15,6 +17,7 @@ find_package(rclcpp REQUIRED )
 # find_package(rclcpp_action REQUIRED )
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
+find_package(metacontrol_kb_msgs REQUIRED)
 # find_package(ament_index_cpp REQUIRED)
 
 find_package(ZMQ)
@@ -33,6 +36,7 @@ set(dependencies
   std_msgs
   # std_srvs
   ament_index_cpp
+  metacontrol_kb_msgs
 )
 
 include_directories(
@@ -47,6 +51,8 @@ add_library(mock_search_pipeline_bt_node SHARED src/suave_bt/mock_search_pipelin
 add_library(mock_inspect_pipeline_bt_node SHARED src/suave_bt/mock_inspect_pipeline.cpp)
 add_library(mock_recharge_battery_bt_node SHARED src/suave_bt/mock_recharge_battery.cpp)
 
+add_library(is_task_feasible_bt_node SHARED src/suave_bt/is_task_feasible.cpp)
+
 list(APPEND plugin_libs
   mock_pipeline_found_bt_node
   mock_pipeline_inspected_bt_node
@@ -54,6 +60,7 @@ list(APPEND plugin_libs
   mock_search_pipeline_bt_node
   mock_inspect_pipeline_bt_node
   mock_recharge_battery_bt_node
+  is_task_feasible_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})

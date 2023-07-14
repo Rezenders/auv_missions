@@ -1,44 +1,85 @@
-<?xml version="1.0"?>
-<root main_tree_to_execute="MainTree">
-    <!-- ////////// -->
-    <BehaviorTree ID="MainTree">
-        <RetryUntilSuccessful num_attempts="-1">
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4"
+      main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RetryUntilSuccessful num_attempts="-1">
+      <ReactiveSequence>
+        <ReactiveFallback>
+          <ReactiveSequence>
+            <MockPipelineFound/>
+            <MockEnoughBattery/>
+            <ReactiveFallback>
+              <MockPipelineInspected/>
+              <ReactiveSequence>
+                <IsTaskFeasible task_name="inspect pipeline"/>
+                <MockInspectPipeline/>
+              </ReactiveSequence>
+            </ReactiveFallback>
+          </ReactiveSequence>
+          <ReactiveSequence>
+            <MockEnoughBattery/>
+            <ReactiveFallback>
+              <MockPipelineFound/>
+              <ReactiveSequence>
+                <IsTaskFeasible task_name="search pipeline"/>
+                <MockSearchPipeline/>
+              </ReactiveSequence>
+            </ReactiveFallback>
+          </ReactiveSequence>
+          <ReactiveSequence>
+            <Inverter>
+              <MockEnoughBattery/>
+            </Inverter>
             <ReactiveSequence>
-                <ReactiveFallback>
-                    <ReactiveSequence>
-                        <Condition ID="MockPipelineFound"/>
-                        <Condition ID="MockEnoughBattery"/>
-                        <ReactiveFallback>
-                            <Condition ID="MockPipelineInspected"/>
-                            <Action ID="MockInspectPipeline"/>
-                        </ReactiveFallback>
-                    </ReactiveSequence>
-                    <ReactiveSequence>
-                        <Condition ID="MockEnoughBattery"/>
-                        <ReactiveFallback>
-                            <Condition ID="MockPipelineFound"/>
-                            <Action ID="MockSearchPipeline"/>
-                        </ReactiveFallback>
-                    </ReactiveSequence>
-                    <ReactiveSequence>
-                        <Inverter>
-                            <Condition ID="MockEnoughBattery"/>
-                        </Inverter>
-                        <Action ID="MockRechargeBattery"/>
-                    </ReactiveSequence>
-                </ReactiveFallback>
-                <Condition ID="MockPipelineInspected"/>
+              <IsTaskFeasible task_name="recharge"/>
+              <MockRechargeBattery/>
             </ReactiveSequence>
-        </RetryUntilSuccessful>
-    </BehaviorTree>
-    <!-- ////////// -->
-    <TreeNodesModel>
-        <Condition ID="MockEnoughBattery"/>
-        <Action ID="MockInspectPipeline"/>
-        <Condition ID="MockPipelineFound"/>
-        <Condition ID="MockPipelineInspected"/>
-        <Action ID="MockRechargeBattery"/>
-        <Action ID="MockSearchPipeline"/>
-    </TreeNodesModel>
-    <!-- ////////// -->
+          </ReactiveSequence>
+        </ReactiveFallback>
+        <MockPipelineInspected/>
+      </ReactiveSequence>
+    </RetryUntilSuccessful>
+  </BehaviorTree>
+
+  <BehaviorTree ID="inspect_tree">
+    <ReactiveSequence>
+      <IsTaskFeasible task_name="inspect pipeline"/>
+      <MockInspectPipeline/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="recharge_tree">
+    <ReactiveSequence>
+      <IsTaskFeasible task_name="recharge"/>
+      <MockRechargeBattery/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="search_tree">
+    <ReactiveSequence>
+      <IsTaskFeasible task_name="search pipeline"/>
+      <MockSearchPipeline/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="IsTaskFeasible"
+               editable="true">
+      <input_port name="task_name"/>
+    </Condition>
+    <Condition ID="MockEnoughBattery"
+               editable="false"/>
+    <Action ID="MockInspectPipeline"
+            editable="false"/>
+    <Condition ID="MockPipelineFound"
+               editable="false"/>
+    <Condition ID="MockPipelineInspected"
+               editable="false"/>
+    <Action ID="MockRechargeBattery"
+            editable="false"/>
+    <Action ID="MockSearchPipeline"
+            editable="false"/>
+  </TreeNodesModel>
+
 </root>
