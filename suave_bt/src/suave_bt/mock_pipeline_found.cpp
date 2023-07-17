@@ -20,5 +20,5 @@ MockPipelineFound::pipeline_found()
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
   ++count;
   // RCLCPP_INFO(node_->get_logger(), "Tick pipeline found condition");
-  return (count>25) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+  return (count>55) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }

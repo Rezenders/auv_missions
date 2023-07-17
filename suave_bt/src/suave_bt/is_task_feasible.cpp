@@ -44,13 +44,12 @@ BT::NodeStatus IsTaskFeasible::tick()
   }
 
   auto response = selectable_tasks_client->async_send_request(request);
-  // RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), selectable_tasks);
   if (rclcpp::spin_until_future_complete(node_, response) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
     auto selectable_tasks = response.get()->tasks;
     for (auto task: selectable_tasks){
-      if (task.task_name == task_name){
+      if (std::strcmp(task.task_name.c_str(), task_name.c_str()) == 0){
         return BT::NodeStatus::SUCCESS;
       }
     }

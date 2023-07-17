@@ -27,9 +27,6 @@
             </ReactiveFallback>
           </ReactiveSequence>
           <ReactiveSequence>
-            <Inverter>
-              <MockEnoughBattery/>
-            </Inverter>
             <ReactiveSequence>
               <IsTaskFeasible task_name="recharge"/>
               <MockRechargeBattery/>
