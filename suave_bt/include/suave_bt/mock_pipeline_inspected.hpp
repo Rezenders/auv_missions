@@ -18,25 +18,36 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
-// #include "rclcpp/rclcpp.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
 
-class MockPipelineInspected
+namespace suave_bt
+{
+
+class MockPipelineInspected : public BT::ConditionNode
 {
 public:
-  explicit MockPipelineInspected(): count(0) {}
+  explicit MockPipelineInspected(const std::string & xml_tag_name,
+    const BT::NodeConfig & conf);
 
-  BT::NodeStatus pipeline_inspected();
+  BT::NodeStatus tick() override;
 
-  // static BT::PortsList providedPorts()
-  // {
-  //   return BT::PortsList(
-  //     {
-  //     });
-  // }
+  static BT::PortsList providedPorts()
+  {
+    return BT::PortsList(
+      {
+      });
+  }
 
 private:
-  // rclcpp::Node::SharedPtr node_;
-  int count;
+  bool _pipeline_inspected;
+
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_inspected_sub_;
+
+  void pipeline_inspected_cb(const std_msgs::msg::Bool &msg);
 };
+
+}  // namespace suave_bt
 
 #endif  // SUAVE_BT__MOCK_PIPELINE_INSPECTED_HPP_

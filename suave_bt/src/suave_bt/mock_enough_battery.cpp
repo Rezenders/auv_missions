@@ -13,11 +13,43 @@
 // limitations under the License.
 
 #include "suave_bt/mock_enough_battery.hpp"
+#include "suave_bt/mock_pipeline_found.hpp"
 
-BT::NodeStatus MockEnoughBattery::enough_battery()
+namespace suave_bt
+{
+
+using namespace std::placeholders;
+
+MockEnoughBattery::MockEnoughBattery(
+  const std::string & xml_tag_name,
+  const BT::NodeConfig & conf)
+: BT::ConditionNode(xml_tag_name, conf), _battery_charged(true), count(0)
+{
+  node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+
+  battery_charged_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
+    "/battery/charged",
+    10,
+    std::bind(&MockEnoughBattery::battery_charged_cb, this, _1));
+}
+
+void
+MockEnoughBattery::battery_charged_cb(const std_msgs::msg::Bool &msg)
+{
+  _battery_charged = msg.data;
+  if(_battery_charged == true){
+    count = 0;
+  }
+}
+
+BT::NodeStatus MockEnoughBattery::tick()
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
   ++count;
-  // RCLCPP_INFO(node_->get_logger(), "Tick pipeline found condition");
-  return (count<=2000) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+  if (count>2000){
+    _battery_charged = false;
+  }
+  return (_battery_charged==true) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }
+
+}  // namespace suave_bt

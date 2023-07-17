@@ -16,5 +16,33 @@
 
 namespace suave_bt
 {
+  RechargeBattery::RechargeBattery(
+    const std::string& name, const BT::NodeConfig & conf)
+  : BT::StatefulActionNode(name, conf)
+  {
+    node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
 
+    battery_charged_pub_  = node_->create_publisher<std_msgs::msg::Bool>(
+      "/battery/charged", 10);
+  }
+
+  BT::NodeStatus RechargeBattery::onStart(){
+    std::cout << "Async action starting: " << this->name() << std::endl;
+    _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
+    return BT::NodeStatus::RUNNING;
+  }
+
+  BT::NodeStatus RechargeBattery::onRunning(){
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+    if(std::chrono::system_clock::now() >= _completion_time){
+      std::cout << "Async action finished: "<< this->name() << std::endl;
+      std_msgs::msg::Bool msg;
+      msg.data = true;
+      battery_charged_pub_->publish(msg);
+      return BT::NodeStatus::SUCCESS;
+    }
+    std::cout<<"Recharging battery! "<<std::endl;
+    return BT::NodeStatus::RUNNING;
+  }
 } //namespace suave_bt

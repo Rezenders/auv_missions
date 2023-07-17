@@ -21,6 +21,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "metacontrol_kb_msgs/srv/tasks_matched.hpp"
 
+namespace suave_bt
+{
+
 class IsTaskFeasible : public BT::ConditionNode
 {
 public:
@@ -41,5 +44,7 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Client<metacontrol_kb_msgs::srv::TasksMatched>::SharedPtr selectable_tasks_client;
 };
+
+} //namespace suave_bt
 
 #endif  // SUAVE_BT__IS_TASK_FEASIBLE_HPP_

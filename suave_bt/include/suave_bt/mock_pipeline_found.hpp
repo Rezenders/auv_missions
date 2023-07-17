@@ -18,25 +18,36 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
-// #include "rclcpp/rclcpp.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
 
-class MockPipelineFound
+namespace suave_bt
+{
+
+class MockPipelineFound : public BT::ConditionNode
 {
 public:
-  MockPipelineFound(): count(0) {}
+  explicit MockPipelineFound(const std::string & xml_tag_name,
+    const BT::NodeConfig & conf);
 
-  BT::NodeStatus pipeline_found();
+  BT::NodeStatus tick() override;
 
-  // static BT::PortsList providedPorts()
-  // {
-  //   return BT::PortsList(
-  //     {
-  //     });
-  // }
+  static BT::PortsList providedPorts()
+  {
+    return BT::PortsList(
+      {
+      });
+  }
 
 private:
-  // rclcpp::Node::SharedPtr node_;
-  int count;
+  bool _pipeline_detected;
+
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_detection_sub_;
+
+  void pipeline_detected_cb(const std_msgs::msg::Bool &msg);
 };
+
+}  // namespace suave_bt
 
 #endif  // SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_

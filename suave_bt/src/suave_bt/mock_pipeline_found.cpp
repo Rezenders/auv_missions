@@ -14,11 +14,34 @@
 
 #include "suave_bt/mock_pipeline_found.hpp"
 
-BT::NodeStatus
-MockPipelineFound::pipeline_found()
+namespace suave_bt
 {
-  std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  ++count;
-  // RCLCPP_INFO(node_->get_logger(), "Tick pipeline found condition");
-  return (count>55) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+
+using namespace std::placeholders;
+
+MockPipelineFound::MockPipelineFound(
+  const std::string & xml_tag_name,
+  const BT::NodeConfig & conf)
+: BT::ConditionNode(xml_tag_name, conf), _pipeline_detected(false)
+{
+  node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+
+  pipeline_detection_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
+    "/pipeline/detected",
+    10,
+    std::bind(&MockPipelineFound::pipeline_detected_cb, this, _1));
 }
+
+void
+MockPipelineFound::pipeline_detected_cb(const std_msgs::msg::Bool &msg)
+{
+  _pipeline_detected = msg.data;
+}
+
+BT::NodeStatus
+MockPipelineFound::tick()
+{
+  return (_pipeline_detected==true) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+}
+
+}  // namespace suave_bt

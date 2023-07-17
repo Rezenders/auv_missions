@@ -18,40 +18,37 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
+
 namespace suave_bt
 {
 
 class InspectPipeline : public BT::StatefulActionNode{
 
-  protected:
-    std::chrono::system_clock::time_point _completion_time;
-    // float altitude;
+public:
+  InspectPipeline(const std::string& name, const BT::NodeConfig & conf);
 
-  public:
-  InspectPipeline(const std::string& name) :
-      BT::StatefulActionNode(name, {}){}
+  BT::NodeStatus onStart() override;
 
-  BT::NodeStatus onStart() override{
-    std::cout << "Async action starting: " << this->name() << std::endl;
-    _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
-    return BT::NodeStatus::RUNNING;
-  }
-
-  BT::NodeStatus onRunning() override{
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-    if(std::chrono::system_clock::now() >= _completion_time){
-      std::cout << "Async action finished: "<< this->name() << std::endl;
-      return BT::NodeStatus::SUCCESS;
-    }
-    std::cout<<"Inspecting pipeline! "<<std::endl;
-    return BT::NodeStatus::RUNNING;
-  }
+  BT::NodeStatus onRunning() override;
 
   void onHalted() override{
     std::cout<< "Async action halted: "<< this->name() <<std::endl;
   }
 
+  static BT::PortsList providedPorts()
+  {
+    return BT::PortsList(
+      {
+      });
+  }
+
+private:
+  std::chrono::system_clock::time_point _completion_time;
+
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_inspection_pub_;
 };
 
 }  // namespace suave_bt

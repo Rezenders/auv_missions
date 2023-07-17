@@ -15,6 +15,9 @@
 #include <chrono>
 #include "suave_bt/is_task_feasible.hpp"
 
+namespace suave_bt
+{
+
 using namespace std::chrono_literals;
 
 IsTaskFeasible::IsTaskFeasible(
@@ -59,3 +62,5 @@ BT::NodeStatus IsTaskFeasible::tick()
     return BT::NodeStatus::FAILURE;
   }
 }
+
+} //namespace suave_bt

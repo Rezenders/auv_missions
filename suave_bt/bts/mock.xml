@@ -3,38 +3,38 @@
       main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
     <RetryUntilSuccessful num_attempts="-1">
-      <ReactiveSequence>
-        <ReactiveFallback>
-          <ReactiveSequence>
-            <MockPipelineFound/>
-            <MockEnoughBattery/>
-            <ReactiveFallback>
-              <MockPipelineInspected/>
-              <ReactiveSequence>
-                <IsTaskFeasible task_name="inspect pipeline"/>
-                <MockInspectPipeline/>
-              </ReactiveSequence>
-            </ReactiveFallback>
-          </ReactiveSequence>
-          <ReactiveSequence>
-            <MockEnoughBattery/>
-            <ReactiveFallback>
-              <MockPipelineFound/>
-              <ReactiveSequence>
-                <IsTaskFeasible task_name="search pipeline"/>
-                <MockSearchPipeline/>
-              </ReactiveSequence>
-            </ReactiveFallback>
-          </ReactiveSequence>
-          <ReactiveSequence>
-            <ReactiveSequence>
-              <IsTaskFeasible task_name="recharge"/>
-              <MockRechargeBattery/>
-            </ReactiveSequence>
-          </ReactiveSequence>
-        </ReactiveFallback>
+      <ReactiveFallback>
         <MockPipelineInspected/>
-      </ReactiveSequence>
+        <ReactiveSequence>
+          <ReactiveFallback>
+            <ReactiveSequence>
+              <MockPipelineFound/>
+              <MockEnoughBattery/>
+              <ReactiveFallback>
+                <MockPipelineInspected/>
+                <ReactiveSequence>
+                  <IsTaskFeasible task_name="inspect pipeline"/>
+                  <MockInspectPipeline/>
+                </ReactiveSequence>
+              </ReactiveFallback>
+            </ReactiveSequence>
+            <ReactiveSequence>
+              <MockEnoughBattery/>
+              <ReactiveFallback>
+                <MockPipelineFound/>
+                <ReactiveSequence>
+                  <IsTaskFeasible task_name="search pipeline"/>
+                  <MockSearchPipeline/>
+                </ReactiveSequence>
+              </ReactiveFallback>
+            </ReactiveSequence>
+          </ReactiveFallback>
+          <ReactiveSequence>
+            <IsTaskFeasible task_name="recharge"/>
+            <MockRechargeBattery/>
+          </ReactiveSequence>
+        </ReactiveSequence>
+      </ReactiveFallback>
     </RetryUntilSuccessful>
   </BehaviorTree>
 

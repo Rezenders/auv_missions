@@ -18,25 +18,37 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
-// #include "rclcpp/rclcpp.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
 
-class MockEnoughBattery
+namespace suave_bt
+{
+
+class MockEnoughBattery : public BT::ConditionNode
 {
 public:
-  MockEnoughBattery(): count(0) {}
+  MockEnoughBattery(const std::string & xml_tag_name,
+    const BT::NodeConfig & conf);
 
-  BT::NodeStatus enough_battery();
+  BT::NodeStatus tick() override;
 
-  // static BT::PortsList providedPorts()
-  // {
-  //   return BT::PortsList(
-  //     {
-  //     });
-  // }
+  static BT::PortsList providedPorts()
+  {
+    return BT::PortsList(
+      {
+      });
+  }
 
 private:
-  // rclcpp::Node::SharedPtr node_;
+  bool _battery_charged;
   int count;
+
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr battery_charged_sub_;
+
+  void battery_charged_cb(const std_msgs::msg::Bool &msg);
 };
+
+}  // namespace suave_bt
 
 #endif  // SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
