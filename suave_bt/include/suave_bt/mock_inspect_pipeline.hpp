@@ -33,9 +33,7 @@ public:
 
   BT::NodeStatus onRunning() override;
 
-  void onHalted() override{
-    std::cout<< "Async action halted: "<< this->name() <<std::endl;
-  }
+  void onHalted() override;
 
   static BT::PortsList providedPorts()
   {
@@ -46,6 +44,8 @@ public:
 
 private:
   std::chrono::system_clock::time_point _completion_time;
+  std::chrono::system_clock::duration _missing_time;
+  bool _initial_inspection;
 
   rclcpp::Node::SharedPtr node_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_inspection_pub_;

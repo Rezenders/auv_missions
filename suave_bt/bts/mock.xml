@@ -3,38 +3,39 @@
       main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
     <RetryUntilSuccessful num_attempts="-1">
-      <ReactiveFallback>
-        <MockPipelineInspected/>
-        <ReactiveSequence>
-          <ReactiveFallback>
-            <ReactiveSequence>
-              <MockPipelineFound/>
-              <MockEnoughBattery/>
-              <ReactiveFallback>
-                <MockPipelineInspected/>
-                <ReactiveSequence>
-                  <IsTaskFeasible task_name="inspect pipeline"/>
-                  <MockInspectPipeline/>
-                </ReactiveSequence>
-              </ReactiveFallback>
-            </ReactiveSequence>
-            <ReactiveSequence>
-              <MockEnoughBattery/>
-              <ReactiveFallback>
-                <MockPipelineFound/>
-                <ReactiveSequence>
-                  <IsTaskFeasible task_name="search pipeline"/>
-                  <MockSearchPipeline/>
-                </ReactiveSequence>
-              </ReactiveFallback>
-            </ReactiveSequence>
-          </ReactiveFallback>
+      <ReactiveSequence>
+        <ReactiveFallback>
           <ReactiveSequence>
+            <Inverter>
+              <MockEnoughBattery/>
+            </Inverter>
             <IsTaskFeasible task_name="recharge"/>
             <MockRechargeBattery/>
           </ReactiveSequence>
+          <ReactiveSequence>
+            <MockPipelineFound/>
+            <ReactiveFallback>
+              <MockPipelineInspected/>
+              <ReactiveSequence>
+                <IsTaskFeasible task_name="inspect pipeline"/>
+                <MockInspectPipeline/>
+              </ReactiveSequence>
+            </ReactiveFallback>
+          </ReactiveSequence>
+          <ReactiveFallback>
+            <MockPipelineFound/>
+            <ReactiveSequence>
+              <IsTaskFeasible task_name="search pipeline"/>
+              <MockSearchPipeline/>
+            </ReactiveSequence>
+          </ReactiveFallback>
+        </ReactiveFallback>
+        <ReactiveSequence>
+          <MockPipelineFound/>
+          <MockPipelineInspected/>
+          <MockEnoughBattery/>
         </ReactiveSequence>
-      </ReactiveFallback>
+      </ReactiveSequence>
     </RetryUntilSuccessful>
   </BehaviorTree>
 

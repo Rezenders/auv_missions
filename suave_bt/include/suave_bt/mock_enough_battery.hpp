@@ -40,8 +40,8 @@ public:
   }
 
 private:
+  std::chrono::system_clock::time_point _expected_discharge;
   bool _battery_charged;
-  int count;
 
   rclcpp::Node::SharedPtr node_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr battery_charged_sub_;

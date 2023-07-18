@@ -23,7 +23,7 @@ using namespace std::placeholders;
 MockEnoughBattery::MockEnoughBattery(
   const std::string & xml_tag_name,
   const BT::NodeConfig & conf)
-: BT::ConditionNode(xml_tag_name, conf), _battery_charged(true), count(0)
+: BT::ConditionNode(xml_tag_name, conf), _battery_charged(true)
 {
   node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
 
@@ -31,6 +31,8 @@ MockEnoughBattery::MockEnoughBattery(
     "/battery/charged",
     10,
     std::bind(&MockEnoughBattery::battery_charged_cb, this, _1));
+
+  _expected_discharge = std::chrono::system_clock::now() + std::chrono::milliseconds(10000);
 }
 
 void
@@ -38,16 +40,15 @@ MockEnoughBattery::battery_charged_cb(const std_msgs::msg::Bool &msg)
 {
   _battery_charged = msg.data;
   if(_battery_charged == true){
-    count = 0;
+    _expected_discharge = std::chrono::system_clock::now() + std::chrono::milliseconds(10000);
   }
 }
 
 BT::NodeStatus MockEnoughBattery::tick()
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  ++count;
-  if (count>2000){
-    _battery_charged = false;
+  if(std::chrono::system_clock::now() >= _expected_discharge){
+   _battery_charged = false;
   }
   return (_battery_charged==true) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }

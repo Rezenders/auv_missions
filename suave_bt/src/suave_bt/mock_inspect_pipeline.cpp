@@ -18,7 +18,7 @@ namespace suave_bt
 {
   InspectPipeline::InspectPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : BT::StatefulActionNode(name, conf)
+  : BT::StatefulActionNode(name, conf), _initial_inspection(true)
   {
     node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
 
@@ -29,8 +29,19 @@ namespace suave_bt
   BT::NodeStatus InspectPipeline::onStart()
   {
     std::cout << "Async action starting: " << this->name() << std::endl;
-    _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
+    if(_initial_inspection == true){
+      _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(20000);
+      _initial_inspection = false;
+    } else{
+      _completion_time = std::chrono::system_clock::now() + _missing_time;
+    }
     return BT::NodeStatus::RUNNING;
+  }
+
+  void InspectPipeline::onHalted(){
+    std::cout<< "Async action halted: "<< this->name() <<std::endl;
+    // _missing_time = _completion_time - std::chrono::system_clock::now();
+    _missing_time = std::chrono::duration_cast<std::chrono::milliseconds>(_completion_time - std::chrono::system_clock::now());
   }
 
   BT::NodeStatus InspectPipeline::onRunning()
