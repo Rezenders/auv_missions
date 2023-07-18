@@ -21,21 +21,20 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
+#include "suave_bt/metacontroled_action.hpp"
+
+
 namespace suave_bt
 {
 
-class SearchPipeline : public BT::StatefulActionNode{
+class SearchPipeline : public MetacontroledAction{
 
 public:
   SearchPipeline(const std::string& name, const BT::NodeConfig & conf);
 
-  BT::NodeStatus onStart() override;
+  BT::NodeStatus onStart();
 
   BT::NodeStatus onRunning() override;
-
-  void onHalted() override{
-    std::cout<< "Async action halted: "<< this->name() <<std::endl;
-  }
 
   static BT::PortsList providedPorts()
   {
@@ -44,10 +43,9 @@ public:
       });
   }
 
-private:
+protected:
   std::chrono::system_clock::time_point _completion_time;
 
-  rclcpp::Node::SharedPtr node_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_detection_pub_;
 };
 

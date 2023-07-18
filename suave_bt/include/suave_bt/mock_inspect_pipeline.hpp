@@ -21,19 +21,21 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
+#include "suave_bt/metacontroled_action.hpp"
+
 namespace suave_bt
 {
 
-class InspectPipeline : public BT::StatefulActionNode{
+class InspectPipeline : public MetacontroledAction{
 
 public:
   InspectPipeline(const std::string& name, const BT::NodeConfig & conf);
 
-  BT::NodeStatus onStart() override;
+  BT::NodeStatus onStart();
 
   BT::NodeStatus onRunning() override;
 
-  void onHalted() override;
+  void onHalted();
 
   static BT::PortsList providedPorts()
   {
@@ -47,7 +49,6 @@ private:
   std::chrono::system_clock::duration _missing_time;
   bool _initial_inspection;
 
-  rclcpp::Node::SharedPtr node_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_inspection_pub_;
 };
 

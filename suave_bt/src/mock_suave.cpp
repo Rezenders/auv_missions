@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// #include <string>
-// #include <memory>
-
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
 #include "behaviortree_cpp/behavior_tree.h"
@@ -41,25 +38,13 @@ int main(int argc, char * argv[])
   BT::BehaviorTreeFactory factory;
   BT::SharedLibrary loader;
 
-  factory.registerNodeType<suave_bt::SearchPipeline>("MockSearchPipeline");
-  factory.registerNodeType<suave_bt::InspectPipeline>("MockInspectPipeline");
-  factory.registerNodeType<suave_bt::RechargeBattery>("MockRechargeBattery");
-
-  // MockEnoughBattery mock_enough_battery;
-	// factory.registerSimpleCondition("MockEnoughBattery",
-  //   std::bind(&MockEnoughBattery::enough_battery, mock_enough_battery));
+  factory.registerNodeType<suave_bt::SearchPipeline>("search_pipeline");
+  factory.registerNodeType<suave_bt::InspectPipeline>("inspect_pipeline");
+  factory.registerNodeType<suave_bt::RechargeBattery>("recharge");
 
   factory.registerNodeType<suave_bt::MockEnoughBattery>("MockEnoughBattery");
   factory.registerNodeType<suave_bt::MockPipelineFound>("MockPipelineFound");
-  // MockPipelineFound mock_pipeline_found;
-	// factory.registerSimpleCondition("MockPipelineFound",
-  //   std::bind(&MockPipelineFound::pipeline_found, mock_pipeline_found));
-
   factory.registerNodeType<suave_bt::MockPipelineInspected>("MockPipelineInspected");
-  // MockPipelineInspected mock_pipeline_inspected;
-	// factory.registerSimpleCondition("MockPipelineInspected",
-  //   std::bind(&MockPipelineInspected::pipeline_inspected, mock_pipeline_inspected));
-
   factory.registerNodeType<suave_bt::IsTaskFeasible>("IsTaskFeasible");
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("suave_bt");

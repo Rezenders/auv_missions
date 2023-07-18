@@ -53,6 +53,8 @@ add_library(mock_recharge_battery_bt_node SHARED src/suave_bt/mock_recharge_batt
 
 add_library(is_task_feasible_bt_node SHARED src/suave_bt/is_task_feasible.cpp)
 
+add_library(metacontroled_action SHARED src/suave_bt/metacontroled_action.cpp)
+
 list(APPEND plugin_libs
   mock_pipeline_found_bt_node
   mock_pipeline_inspected_bt_node
@@ -61,6 +63,7 @@ list(APPEND plugin_libs
   mock_inspect_pipeline_bt_node
   mock_recharge_battery_bt_node
   is_task_feasible_bt_node
+  metacontroled_action
 )
 
 foreach(bt_plugin ${plugin_libs})

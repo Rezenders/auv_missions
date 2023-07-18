@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
-#define SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#ifndef SUAVE_BT__METACONTROLED_ACTION_HPP_
+#define SUAVE_BT__METACONTROLED_ACTION_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/bool.hpp"
-
-#include "suave_bt/metacontroled_action.hpp"
+#include "metacontrol_kb_msgs/srv/task_request.hpp"
 
 namespace suave_bt
 {
 
-class RechargeBattery : public MetacontroledAction{
+class MetacontroledAction : public BT::StatefulActionNode{
 
 public:
-  RechargeBattery(const std::string& name, const BT::NodeConfig & conf);
+  MetacontroledAction(
+      const std::string& name,
+      const BT::NodeConfig & conf
+  );
 
-  BT::NodeStatus onStart();
+  BT::NodeStatus onStart() override;
 
-  BT::NodeStatus onRunning() override;
+  void onHalted() override;
 
   static BT::PortsList providedPorts()
   {
@@ -42,12 +43,11 @@ public:
       });
   }
 
-private:
-  std::chrono::system_clock::time_point _completion_time;
-
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr battery_charged_pub_;
+protected:
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Client<metacontrol_kb_msgs::srv::TaskRequest>::SharedPtr task_req_client;
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#endif  // SUAVE_BT__METACONTROLED_ACTION_HPP_

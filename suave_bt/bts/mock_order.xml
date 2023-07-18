@@ -10,25 +10,23 @@
               <MockEnoughBattery/>
             </Inverter>
             <IsTaskFeasible task_name="recharge"/>
-            <recharge/>
+            <MockRechargeBattery/>
           </ReactiveSequence>
           <ReactiveSequence>
             <MockPipelineFound/>
             <ReactiveFallback>
               <MockPipelineInspected/>
               <ReactiveSequence>
-                <IsTaskFeasible task_name="inspect_pipeline"/>
-                <MockEnoughBattery/>
-                <inspect_pipeline/>
+                <IsTaskFeasible task_name="inspect pipeline"/>
+                <MockInspectPipeline/>
               </ReactiveSequence>
             </ReactiveFallback>
           </ReactiveSequence>
           <ReactiveFallback>
             <MockPipelineFound/>
             <ReactiveSequence>
-              <IsTaskFeasible task_name="search_pipeline"/>
-              <MockEnoughBattery/>
-              <search_pipeline/>
+              <IsTaskFeasible task_name="search pipeline"/>
+              <MockSearchPipeline/>
             </ReactiveSequence>
           </ReactiveFallback>
         </ReactiveFallback>
@@ -43,22 +41,22 @@
 
   <BehaviorTree ID="inspect_tree">
     <ReactiveSequence>
-      <IsTaskFeasible task_name="inspect_pipeline"/>
-      <inspect_pipeline/>
+      <IsTaskFeasible task_name="inspect pipeline"/>
+      <MockInspectPipeline/>
     </ReactiveSequence>
   </BehaviorTree>
 
   <BehaviorTree ID="recharge_tree">
     <ReactiveSequence>
       <IsTaskFeasible task_name="recharge"/>
-      <recharge/>
+      <MockRechargeBattery/>
     </ReactiveSequence>
   </BehaviorTree>
 
   <BehaviorTree ID="search_tree">
     <ReactiveSequence>
-      <IsTaskFeasible task_name="search_pipeline"/>
-      <search_pipeline/>
+      <IsTaskFeasible task_name="search pipeline"/>
+      <MockSearchPipeline/>
     </ReactiveSequence>
   </BehaviorTree>
 
@@ -70,15 +68,15 @@
     </Condition>
     <Condition ID="MockEnoughBattery"
                editable="false"/>
+    <Action ID="MockInspectPipeline"
+            editable="false"/>
     <Condition ID="MockPipelineFound"
                editable="false"/>
     <Condition ID="MockPipelineInspected"
                editable="false"/>
-    <Action ID="inspect_pipeline"
+    <Action ID="MockRechargeBattery"
             editable="false"/>
-    <Action ID="recharge"
-            editable="false"/>
-    <Action ID="search_pipeline"
+    <Action ID="MockSearchPipeline"
             editable="false"/>
   </TreeNodesModel>
 

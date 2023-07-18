@@ -40,10 +40,10 @@ BT::NodeStatus IsTaskFeasible::tick()
 
   while (!selectable_tasks_client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
-      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+      RCLCPP_ERROR(node_->get_logger(), "Interrupted while waiting for the service. Exiting.");
       return BT::NodeStatus::FAILURE;
     }
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+    RCLCPP_INFO(node_->get_logger(), "service not available, waiting again...");
   }
 
   auto response = selectable_tasks_client->async_send_request(request);
@@ -58,7 +58,7 @@ BT::NodeStatus IsTaskFeasible::tick()
     }
     return BT::NodeStatus::FAILURE;
   } else {
-    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service tasks selectable");
+    RCLCPP_ERROR(node_->get_logger(), "Failed to call service tasks selectable");
     return BT::NodeStatus::FAILURE;
   }
 }

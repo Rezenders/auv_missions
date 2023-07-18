@@ -18,22 +18,20 @@ namespace suave_bt
 {
   SearchPipeline::SearchPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : BT::StatefulActionNode(name, conf)
+  : MetacontroledAction(name, conf)
   {
-    node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
-
     pipeline_detection_pub_  = node_->create_publisher<std_msgs::msg::Bool>(
       "/pipeline/detected", 10);
   }
 
   BT::NodeStatus SearchPipeline::onStart(){
-    std::cout << "Async action starting: " << this->name() << std::endl;
     _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
-    return BT::NodeStatus::RUNNING;
+
+    return MetacontroledAction::onStart();
   }
 
   BT::NodeStatus SearchPipeline::onRunning(){
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     if(std::chrono::system_clock::now() >= _completion_time){
       std::cout << "Async action finished: "<< this->name() << std::endl;
