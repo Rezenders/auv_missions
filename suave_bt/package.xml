@@ -15,6 +15,7 @@
 
   <depend>behaviortree_cpp_v3</depend>
   <depend>metacontrol_kb_msgs</depend>
+  <depend>metacontrol_plan</depend>
 
   <!-- <buildtool_depend>rosidl_default_generators</buildtool_depend> -->
   <!-- <depend>action_msgs</depend> -->

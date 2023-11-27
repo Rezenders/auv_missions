@@ -12,32 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "suave_bt/mock_search_pipeline.hpp"
+#include "suave_bt/action_search_pipeline.hpp"
 
 namespace suave_bt
 {
+  using namespace std::placeholders;
+
   SearchPipeline::SearchPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : MetacontroledAction(name, conf)
+  : metacontrol_plan::MetacontroledAction(name, conf)
   {
-    pipeline_detection_pub_  = node_->create_publisher<std_msgs::msg::Bool>(
-      "/pipeline/detected", 10);
+    pipeline_detection_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
+      "/pipeline/detected",
+      10,
+      std::bind(&SearchPipeline::pipeline_detected_cb, this, _1));
+  }
+
+  void
+  SearchPipeline::pipeline_detected_cb(const std_msgs::msg::Bool &msg)
+  {
+    _pipeline_detected = msg.data;
   }
 
   BT::NodeStatus SearchPipeline::onStart(){
-    _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
-
-    return MetacontroledAction::onStart();
+    return metacontrol_plan::MetacontroledAction::onStart();
   }
 
   BT::NodeStatus SearchPipeline::onRunning(){
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
-    if(std::chrono::system_clock::now() >= _completion_time){
+    if(_pipeline_detected == true){
       std::cout << "Async action finished: "<< this->name() << std::endl;
-      std_msgs::msg::Bool msg;
-      msg.data = true;
-      pipeline_detection_pub_->publish(msg);
       return BT::NodeStatus::SUCCESS;
     }
     std::cout<<"Searching for pipeline! "<<std::endl;

@@ -21,13 +21,13 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "suave_bt/mock_recharge_battery.hpp"
-#include "suave_bt/mock_search_pipeline.hpp"
-#include "suave_bt/mock_inspect_pipeline.hpp"
-#include "suave_bt/mock_pipeline_found.hpp"
-#include "suave_bt/mock_pipeline_inspected.hpp"
-#include "suave_bt/mock_enough_battery.hpp"
-#include "suave_bt/is_task_feasible.hpp"
+#include "suave_bt/action_recharge_battery.hpp"
+#include "suave_bt/action_search_pipeline.hpp"
+#include "suave_bt/action_inspect_pipeline.hpp"
+#include "suave_bt/is_pipeline_found.hpp"
+#include "suave_bt/is_pipeline_inspected.hpp"
+#include "suave_bt/is_enough_battery.hpp"
+#include "metacontrol_plan/is_task_feasible.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -42,10 +42,10 @@ int main(int argc, char * argv[])
   factory.registerNodeType<suave_bt::InspectPipeline>("inspect_pipeline");
   factory.registerNodeType<suave_bt::RechargeBattery>("recharge");
 
-  factory.registerNodeType<suave_bt::MockEnoughBattery>("MockEnoughBattery");
-  factory.registerNodeType<suave_bt::MockPipelineFound>("MockPipelineFound");
-  factory.registerNodeType<suave_bt::MockPipelineInspected>("MockPipelineInspected");
-  factory.registerNodeType<suave_bt::IsTaskFeasible>("IsTaskFeasible");
+  factory.registerNodeType<suave_bt::IsEnoughBattery>("IsEnoughBattery");
+  factory.registerNodeType<suave_bt::IsPipelineFound>("IsPipelineFound");
+  factory.registerNodeType<suave_bt::IsPipelineInspected>("IsPipelineInspected");
+  factory.registerNodeType<metacontrol_plan::IsTaskFeasible>("IsTaskFeasible");
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("suave_bt");
   std::string xml_file = pkgpath + "/bts/mock.xml";

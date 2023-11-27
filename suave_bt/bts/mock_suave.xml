@@ -3,46 +3,46 @@
   <BehaviorTree ID="MainTree">
     <ReactiveFallback>
       <ReactiveSequence>
-        <MockPipelineInspected/>
-        <MockRechargeBattery/>
+        <IsPipelineInspected/>
+        <RechargeBattery/>
       </ReactiveSequence>
       <ReactiveSequence>
-        <MockPipelineFound/>
-        <MockEnoughBattery/>
+        <IsPipelineFound/>
+        <IsEnoughBattery/>
         <ReactiveFallback>
-          <MockPipelineInspected/>
-          <MockInspectPipeline/>
+          <IsPipelineInspected/>
+          <InspectPipeline/>
         </ReactiveFallback>
       </ReactiveSequence>
       <ReactiveSequence>
-        <MockEnoughBattery/>
+        <IsEnoughBattery/>
         <ReactiveFallback>
-          <MockPipelineFound/>
-          <MockSearchPipeline/>
+          <IsPipelineFound/>
+          <SearchPipeline/>
         </ReactiveFallback>
       </ReactiveSequence>
       <ReactiveSequence>
         <Inverter>
-          <MockEnoughBattery/>
+          <IsEnoughBattery/>
         </Inverter>
-        <MockRechargeBattery/>
+        <RechargeBattery/>
       </ReactiveSequence>
     </ReactiveFallback>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <Condition ID="MockEnoughBattery"
+    <Condition ID="IsEnoughBattery"
                editable="true"/>
-    <Action ID="MockInspectPipeline"
+    <Action ID="InspectPipeline"
             editable="true"/>
-    <Condition ID="MockPipelineFound"
+    <Condition ID="IsPipelineFound"
                editable="true"/>
-    <Condition ID="MockPipelineInspected"
+    <Condition ID="IsPipelineInspected"
                editable="true"/>
-    <Action ID="MockRechargeBattery"
+    <Action ID="RechargeBattery"
             editable="true"/>
-    <Action ID="MockSearchPipeline"
+    <Action ID="SearchPipeline"
             editable="true"/>
   </TreeNodesModel>
 

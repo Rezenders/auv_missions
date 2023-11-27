@@ -7,35 +7,35 @@
         <ReactiveFallback>
           <ReactiveSequence>
             <Inverter>
-              <MockEnoughBattery/>
+              <IsEnoughBattery/>
             </Inverter>
             <IsTaskFeasible task_name="recharge"/>
             <recharge/>
           </ReactiveSequence>
           <ReactiveSequence>
-            <MockPipelineFound/>
+            <IsPipelineFound/>
             <ReactiveFallback>
-              <MockPipelineInspected/>
+              <IsPipelineInspected/>
               <ReactiveSequence>
                 <IsTaskFeasible task_name="inspect_pipeline"/>
-                <MockEnoughBattery/>
+                <IsEnoughBattery/>
                 <inspect_pipeline/>
               </ReactiveSequence>
             </ReactiveFallback>
           </ReactiveSequence>
           <ReactiveFallback>
-            <MockPipelineFound/>
+            <IsPipelineFound/>
             <ReactiveSequence>
               <IsTaskFeasible task_name="search_pipeline"/>
-              <MockEnoughBattery/>
+              <IsEnoughBattery/>
               <search_pipeline/>
             </ReactiveSequence>
           </ReactiveFallback>
         </ReactiveFallback>
         <ReactiveSequence>
-          <MockPipelineFound/>
-          <MockPipelineInspected/>
-          <MockEnoughBattery/>
+          <IsPipelineFound/>
+          <IsPipelineInspected/>
+          <IsEnoughBattery/>
         </ReactiveSequence>
       </ReactiveSequence>
     </RetryUntilSuccessful>
@@ -68,11 +68,11 @@
                editable="true">
       <input_port name="task_name"/>
     </Condition>
-    <Condition ID="MockEnoughBattery"
+    <Condition ID="IsEnoughBattery"
                editable="false"/>
-    <Condition ID="MockPipelineFound"
+    <Condition ID="IsPipelineFound"
                editable="false"/>
-    <Condition ID="MockPipelineInspected"
+    <Condition ID="IsPipelineInspected"
                editable="false"/>
     <Action ID="inspect_pipeline"
             editable="false"/>

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__MOCK_SEARCH_PIPELINE_HPP_
-#define SUAVE_BT__MOCK_SEARCH_PIPELINE_HPP_
+#ifndef SUAVE_BT__MOCK_INSPECT_PIPELINE_HPP_
+#define SUAVE_BT__MOCK_INSPECT_PIPELINE_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
@@ -21,20 +21,21 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
-#include "suave_bt/metacontroled_action.hpp"
-
+#include "metacontrol_plan/metacontroled_action.hpp"
 
 namespace suave_bt
 {
 
-class SearchPipeline : public MetacontroledAction{
+class InspectPipeline : public metacontrol_plan::MetacontroledAction{
 
 public:
-  SearchPipeline(const std::string& name, const BT::NodeConfig & conf);
+  InspectPipeline(const std::string& name, const BT::NodeConfig & conf);
 
   BT::NodeStatus onStart();
 
   BT::NodeStatus onRunning() override;
+
+  void onHalted();
 
   static BT::PortsList providedPorts()
   {
@@ -43,12 +44,14 @@ public:
       });
   }
 
-protected:
+private:
   std::chrono::system_clock::time_point _completion_time;
+  std::chrono::system_clock::duration _missing_time;
+  bool _initial_inspection;
 
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_detection_pub_;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_inspection_pub_;
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_SEARCH_PIPELINE_HPP_
+#endif  // SUAVE_BT__MOCK_INSPECT_PIPELINE_HPP_

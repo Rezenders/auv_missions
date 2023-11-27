@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "suave_bt/mock_enough_battery.hpp"
-#include "suave_bt/mock_pipeline_found.hpp"
+#include "suave_bt/is_enough_battery.hpp"
+// #include "suave_bt/is_pipeline_found.hpp"
 
 namespace suave_bt
 {
 
 using namespace std::placeholders;
 
-MockEnoughBattery::MockEnoughBattery(
+IsEnoughBattery::IsEnoughBattery(
   const std::string & xml_tag_name,
   const BT::NodeConfig & conf)
 : BT::ConditionNode(xml_tag_name, conf), _battery_charged(true)
@@ -30,13 +30,13 @@ MockEnoughBattery::MockEnoughBattery(
   battery_charged_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
     "/battery/charged",
     10,
-    std::bind(&MockEnoughBattery::battery_charged_cb, this, _1));
+    std::bind(&IsEnoughBattery::battery_charged_cb, this, _1));
 
   _expected_discharge = std::chrono::system_clock::now() + std::chrono::milliseconds(10000);
 }
 
 void
-MockEnoughBattery::battery_charged_cb(const std_msgs::msg::Bool &msg)
+IsEnoughBattery::battery_charged_cb(const std_msgs::msg::Bool &msg)
 {
   _battery_charged = msg.data;
   if(_battery_charged == true){
@@ -44,7 +44,7 @@ MockEnoughBattery::battery_charged_cb(const std_msgs::msg::Bool &msg)
   }
 }
 
-BT::NodeStatus MockEnoughBattery::tick()
+BT::NodeStatus IsEnoughBattery::tick()
 {
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
   if(std::chrono::system_clock::now() >= _expected_discharge){

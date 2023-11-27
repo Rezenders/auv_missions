@@ -1,9 +1,9 @@
 <root>
     <TreeNodesModel>
-        <Condition ID="MockEnoughBattery"/>
+        <Condition ID="IsEnoughBattery"/>
         <Action ID="inspect_pipeline"/>
-        <Condition ID="MockPipelineFound"/>
-        <Condition ID="MockPipelineInspected"/>
+        <Condition ID="IsPipelineFound"/>
+        <Condition ID="IsPipelineInspected"/>
         <Action ID="recharge"/>
         <Action ID="search_pipeline"/>
     </TreeNodesModel>

@@ -46,21 +46,20 @@ include_directories(
   ${ZMQ_INCLUDE_DIRS}
 )
 
-add_library(mock_pipeline_found_bt_node SHARED src/suave_bt/mock_pipeline_found.cpp)
-add_library(mock_pipeline_inspected_bt_node SHARED src/suave_bt/mock_pipeline_inspected.cpp)
-add_library(mock_enough_battery_bt_node SHARED src/suave_bt/mock_enough_battery.cpp)
-add_library(mock_search_pipeline_bt_node SHARED src/suave_bt/mock_search_pipeline.cpp)
-add_library(mock_inspect_pipeline_bt_node SHARED src/suave_bt/mock_inspect_pipeline.cpp)
-add_library(mock_recharge_battery_bt_node SHARED src/suave_bt/mock_recharge_battery.cpp)
-
+add_library(is_pipeline_found_bt_node SHARED src/suave_bt/is_pipeline_found.cpp)
+add_library(is_pipeline_inspected_bt_node SHARED src/suave_bt/is_pipeline_inspected.cpp)
+add_library(is_enough_battery_bt_node SHARED src/suave_bt/is_enough_battery.cpp)
+add_library(action_search_pipeline_bt_node SHARED src/suave_bt/action_search_pipeline.cpp)
+add_library(action_inspect_pipeline_bt_node SHARED src/suave_bt/action_inspect_pipeline.cpp)
+add_library(action_recharge_battery_bt_node SHARED src/suave_bt/action_recharge_battery.cpp)
 
 list(APPEND plugin_libs
-  mock_pipeline_found_bt_node
-  mock_pipeline_inspected_bt_node
-  mock_enough_battery_bt_node
-  mock_search_pipeline_bt_node
-  mock_inspect_pipeline_bt_node
-  mock_recharge_battery_bt_node
+  is_pipeline_found_bt_node
+  is_pipeline_inspected_bt_node
+  is_enough_battery_bt_node
+  action_search_pipeline_bt_node
+  action_inspect_pipeline_bt_node
+  action_recharge_battery_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})

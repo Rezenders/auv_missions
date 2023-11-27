@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "suave_bt/mock_pipeline_found.hpp"
+#include "suave_bt/is_pipeline_found.hpp"
 
 namespace suave_bt
 {
 
 using namespace std::placeholders;
 
-MockPipelineFound::MockPipelineFound(
+IsPipelineFound::IsPipelineFound(
   const std::string & xml_tag_name,
   const BT::NodeConfig & conf)
 : BT::ConditionNode(xml_tag_name, conf), _pipeline_detected(false)
@@ -29,17 +29,17 @@ MockPipelineFound::MockPipelineFound(
   pipeline_detection_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
     "/pipeline/detected",
     10,
-    std::bind(&MockPipelineFound::pipeline_detected_cb, this, _1));
+    std::bind(&IsPipelineFound::pipeline_detected_cb, this, _1));
 }
 
 void
-MockPipelineFound::pipeline_detected_cb(const std_msgs::msg::Bool &msg)
+IsPipelineFound::pipeline_detected_cb(const std_msgs::msg::Bool &msg)
 {
   _pipeline_detected = msg.data;
 }
 
 BT::NodeStatus
-MockPipelineFound::tick()
+IsPipelineFound::tick()
 {
   return (_pipeline_detected==true) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }

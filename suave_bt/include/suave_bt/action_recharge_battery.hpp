@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
-#define SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
+#ifndef SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#define SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
@@ -21,16 +21,19 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
+#include "metacontrol_plan/metacontroled_action.hpp"
+
 namespace suave_bt
 {
 
-class MockEnoughBattery : public BT::ConditionNode
-{
-public:
-  MockEnoughBattery(const std::string & xml_tag_name,
-    const BT::NodeConfig & conf);
+class RechargeBattery : public metacontrol_plan::MetacontroledAction{
 
-  BT::NodeStatus tick() override;
+public:
+  RechargeBattery(const std::string& name, const BT::NodeConfig & conf);
+
+  BT::NodeStatus onStart();
+
+  BT::NodeStatus onRunning() override;
 
   static BT::PortsList providedPorts()
   {
@@ -40,15 +43,11 @@ public:
   }
 
 private:
-  std::chrono::system_clock::time_point _expected_discharge;
-  bool _battery_charged;
+  std::chrono::system_clock::time_point _completion_time;
 
-  rclcpp::Node::SharedPtr node_;
-  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr battery_charged_sub_;
-
-  void battery_charged_cb(const std_msgs::msg::Bool &msg);
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr battery_charged_pub_;
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
+#endif  // SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_

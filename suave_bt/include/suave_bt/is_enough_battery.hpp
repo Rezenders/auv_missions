@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
-#define SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
+#ifndef SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
+#define SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
@@ -24,10 +24,10 @@
 namespace suave_bt
 {
 
-class MockPipelineFound : public BT::ConditionNode
+class IsEnoughBattery : public BT::ConditionNode
 {
 public:
-  explicit MockPipelineFound(const std::string & xml_tag_name,
+  IsEnoughBattery(const std::string & xml_tag_name,
     const BT::NodeConfig & conf);
 
   BT::NodeStatus tick() override;
@@ -40,14 +40,15 @@ public:
   }
 
 private:
-  bool _pipeline_detected;
+  std::chrono::system_clock::time_point _expected_discharge;
+  bool _battery_charged;
 
   rclcpp::Node::SharedPtr node_;
-  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_detection_sub_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr battery_charged_sub_;
 
-  void pipeline_detected_cb(const std_msgs::msg::Bool &msg);
+  void battery_charged_cb(const std_msgs::msg::Bool &msg);
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
+#endif  // SUAVE_BT__MOCK_ENOUGH_BATTERY_HPP_

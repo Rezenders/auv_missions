@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
-#define SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#ifndef SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
+#define SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
@@ -21,19 +21,16 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
-#include "suave_bt/metacontroled_action.hpp"
-
 namespace suave_bt
 {
 
-class RechargeBattery : public MetacontroledAction{
-
+class IsPipelineFound : public BT::ConditionNode
+{
 public:
-  RechargeBattery(const std::string& name, const BT::NodeConfig & conf);
+  explicit IsPipelineFound(const std::string & xml_tag_name,
+    const BT::NodeConfig & conf);
 
-  BT::NodeStatus onStart();
-
-  BT::NodeStatus onRunning() override;
+  BT::NodeStatus tick() override;
 
   static BT::PortsList providedPorts()
   {
@@ -43,11 +40,14 @@ public:
   }
 
 private:
-  std::chrono::system_clock::time_point _completion_time;
+  bool _pipeline_detected;
 
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr battery_charged_pub_;
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_detection_sub_;
+
+  void pipeline_detected_cb(const std_msgs::msg::Bool &msg);
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#endif  // SUAVE_BT__MOCK_PIPELINE_FOUND_HPP_
