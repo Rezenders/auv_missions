@@ -18,6 +18,7 @@ find_package(rclcpp REQUIRED )
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
 find_package(metacontrol_kb_msgs REQUIRED)
+find_package(metacontrol_plan REQUIRED)
 # find_package(ament_index_cpp REQUIRED)
 
 find_package(ZMQ)
@@ -37,6 +38,7 @@ set(dependencies
   # std_srvs
   ament_index_cpp
   metacontrol_kb_msgs
+  metacontrol_plan
 )
 
 include_directories(
@@ -51,9 +53,6 @@ add_library(mock_search_pipeline_bt_node SHARED src/suave_bt/mock_search_pipelin
 add_library(mock_inspect_pipeline_bt_node SHARED src/suave_bt/mock_inspect_pipeline.cpp)
 add_library(mock_recharge_battery_bt_node SHARED src/suave_bt/mock_recharge_battery.cpp)
 
-add_library(is_task_feasible_bt_node SHARED src/suave_bt/is_task_feasible.cpp)
-
-add_library(metacontroled_action SHARED src/suave_bt/metacontroled_action.cpp)
 
 list(APPEND plugin_libs
   mock_pipeline_found_bt_node
@@ -62,20 +61,12 @@ list(APPEND plugin_libs
   mock_search_pipeline_bt_node
   mock_inspect_pipeline_bt_node
   mock_recharge_battery_bt_node
-  is_task_feasible_bt_node
-  metacontroled_action
 )
 
 foreach(bt_plugin ${plugin_libs})
   ament_target_dependencies(${bt_plugin} ${dependencies})
   target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
 endforeach()
-
-# ament_target_dependencies(${library_name} ${dependencies})
-
-# add_executable(bt src/behavior_tree_engine.cpp)
-# ament_target_dependencies(bt ${dependencies})
-# target_link_libraries(bt ${ZMQ_LIBRARIES})
 
 add_executable(mock_suave src/mock_suave.cpp)
 ament_target_dependencies(mock_suave ${dependencies})
