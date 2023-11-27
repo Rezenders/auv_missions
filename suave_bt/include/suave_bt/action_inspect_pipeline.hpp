@@ -45,11 +45,9 @@ public:
   }
 
 private:
-  std::chrono::system_clock::time_point _completion_time;
-  std::chrono::system_clock::duration _missing_time;
-  bool _initial_inspection;
-
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_inspection_pub_;
+  bool _pipeline_inspected;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_inspected_sub_;
+  void pipeline_inspected_cb(const std_msgs::msg::Bool &msg);
 };
 
 }  // namespace suave_bt

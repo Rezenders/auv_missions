@@ -16,27 +16,30 @@
 
 namespace suave_bt
 {
+  using namespace std::placeholders;
+
   InspectPipeline::InspectPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : metacontrol_plan::MetacontroledAction(name, conf), _initial_inspection(true)
+  : metacontrol_plan::MetacontroledAction(name, conf), _pipeline_inspected(false)
   {
-    pipeline_inspection_pub_  = node_->create_publisher<std_msgs::msg::Bool>(
-      "/pipeline/inspected", 10);
+    pipeline_inspected_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
+      "/pipeline/inspected",
+      10,
+      std::bind(&InspectPipeline::pipeline_inspected_cb, this, _1));
+  }
+
+  void
+  InspectPipeline::pipeline_inspected_cb(const std_msgs::msg::Bool &msg)
+  {
+    _pipeline_inspected = msg.data;
   }
 
   BT::NodeStatus InspectPipeline::onStart()
   {
-    if(_initial_inspection == true){
-      _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(20000);
-      _initial_inspection = false;
-    } else{
-      _completion_time = std::chrono::system_clock::now() + _missing_time;
-    }
     return metacontrol_plan::MetacontroledAction::onStart();
   }
 
   void InspectPipeline::onHalted(){
-    _missing_time = std::chrono::duration_cast<std::chrono::milliseconds>(_completion_time - std::chrono::system_clock::now());
     metacontrol_plan::MetacontroledAction::onHalted();
   }
 
@@ -44,11 +47,8 @@ namespace suave_bt
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
-    if(std::chrono::system_clock::now() >= _completion_time){
+    if(_pipeline_inspected==true){
       std::cout << "Async action finished: "<< this->name() << std::endl;
-      std_msgs::msg::Bool msg;
-      msg.data = true;
-      pipeline_inspection_pub_->publish(msg);
       return BT::NodeStatus::SUCCESS;
     }
     std::cout<<"Inspecting pipeline! "<<std::endl;

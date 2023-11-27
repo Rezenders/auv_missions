@@ -20,7 +20,7 @@ namespace suave_bt
 
   SearchPipeline::SearchPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : metacontrol_plan::MetacontroledAction(name, conf)
+  : metacontrol_plan::MetacontroledAction(name, conf), _pipeline_detected(false)
   {
     pipeline_detection_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
       "/pipeline/detected",
