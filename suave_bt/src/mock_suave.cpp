@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
   factory.registerNodeType<metacontrol_plan::IsTaskFeasible>("IsTaskFeasible");
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("suave_bt");
-  std::string xml_file = pkgpath + "/bts/mock.xml";
+  std::string xml_file = pkgpath + "/bts/suave.xml";
 
   auto blackboard = BT::Blackboard::create();
   blackboard->set<rclcpp::Node::SharedPtr>("node", node);
