@@ -16,26 +16,60 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_metacontrol_kb = get_package_share_directory('metacontrol_kb')
-    metacontrol_kb_node = Node(
-        package='metacontrol_kb',
-        executable='metacontrol_kb',
-        name='metacontrol_kb',
-        output='screen',
-        parameters=[{
-            'schema_path': [
-                os.path.join(pkg_metacontrol_kb, 'config', 'schema.tql'),
-                os.path.join(pkg_metacontrol_kb, 'config', 'ros_schema.tql')],
-            'data_path': [
-                os.path.join(pkg_metacontrol_kb, 'config', 'suave.tql')],
-            'database_name': 'suave_typedb'
-        }]
+    pkg_metacontrol_kb = get_package_share_directory(
+        'metacontrol_kb')
+
+    pkg_metacontrol_bringup = get_package_share_directory(
+        'metacontrol_bringup')
+    metacontrol_bringup_launch_path = os.path.join(
+        pkg_metacontrol_bringup,
+        'launch',
+        'metacontrol_bringup.launch.py')
+
+    pkg_suave_path = get_package_share_directory(
+        'suave')
+    suave_launch_path = os.path.join(
+        pkg_suave_path,
+        'launch',
+        'suave.launch.py')
+
+    schema_path = "[{0}, {1}]".format(
+        os.path.join(pkg_metacontrol_kb, 'config', 'schema.tql'),
+        os.path.join(pkg_metacontrol_kb, 'config', 'ros_schema.tql'))
+
+    data_path = "[{}]".format(
+        os.path.join(pkg_metacontrol_kb, 'config', 'suave.tql'))
+
+    metacontrol_bringup = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(metacontrol_bringup_launch_path),
+        launch_arguments={
+            'schema_path': schema_path,
+            'data_path': data_path,
+            'database_name': 'suave_db',
+            'force_data': 'True',
+            'force_database': 'True',
+        }.items()
+    )
+
+    suave_bt_node = Node(
+        package='suave_bt',
+        executable='mock_suave',
+    )
+
+    suave_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(suave_launch_path),
+        launch_arguments={
+            'task_bridge': 'False'}.items()
     )
 
     return LaunchDescription([
-        metacontrol_kb_node,
+        metacontrol_bringup,
+        suave_bt_node,
+        suave_launch
     ])
