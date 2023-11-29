@@ -12,26 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__RECHARGE_BATTERY_HPP_
-#define SUAVE_BT__RECHARGE_BATTERY_HPP_
+#ifndef SUAVE_BT__SET_GUIDED_MODE_HPP_
+#define SUAVE_BT__SET_GUIDED_MODE_HPP_
 
+#include <future>
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/bool.hpp"
+#include "mavros_msgs/msg/state.hpp"
+#include "mavros_msgs/srv/set_mode.hpp"
 
-#include "metacontrol_plan/metacontroled_action.hpp"
 
 namespace suave_bt
 {
 
-class RechargeBattery : public metacontrol_plan::MetacontroledAction{
+class SetGuidedMode : public BT::StatefulActionNode{
 
 public:
-  RechargeBattery(const std::string& name, const BT::NodeConfig & conf);
+  SetGuidedMode(const std::string& name, const BT::NodeConfig & conf);
 
-  BT::NodeStatus onStart();
+  BT::NodeStatus onStart() override {return BT::NodeStatus::RUNNING;};
+
+  void onHalted() override {};
 
   BT::NodeStatus onRunning() override;
 
@@ -42,12 +45,14 @@ public:
       });
   }
 
-private:
-  std::chrono::system_clock::time_point _completion_time;
-
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr battery_charged_pub_;
+protected:
+  std::string mode_;
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Client<mavros_msgs::srv::SetMode>::SharedPtr set_guided_cli_;
+  rclcpp::Subscription<mavros_msgs::msg::State>::SharedPtr mavros_state_sub_;
+  void state_cb(const mavros_msgs::msg::State &msg);
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#endif  // SUAVE_BT__SET_GUIDED_MODE_HPP_

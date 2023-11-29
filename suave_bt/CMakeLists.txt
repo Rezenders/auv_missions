@@ -19,6 +19,7 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
 find_package(metacontrol_kb_msgs REQUIRED)
 find_package(metacontrol_plan REQUIRED)
+find_package(mavros_msgs REQUIRED)
 # find_package(ament_index_cpp REQUIRED)
 
 find_package(ZMQ)
@@ -35,6 +36,7 @@ set(dependencies
   # rclcpp_action
   rclcpp_lifecycle
   std_msgs
+  mavros_msgs
   # std_srvs
   ament_index_cpp
   metacontrol_kb_msgs
@@ -52,6 +54,8 @@ add_library(is_enough_battery_bt_node SHARED src/suave_bt/is_enough_battery.cpp)
 add_library(action_search_pipeline_bt_node SHARED src/suave_bt/action_search_pipeline.cpp)
 add_library(action_inspect_pipeline_bt_node SHARED src/suave_bt/action_inspect_pipeline.cpp)
 add_library(action_recharge_battery_bt_node SHARED src/suave_bt/action_recharge_battery.cpp)
+add_library(arm_thrusters_bt_node SHARED src/suave_bt/arm_thrusters.cpp)
+add_library(set_guided_mode_bt_node SHARED src/suave_bt/set_guided_mode.cpp)
 
 list(APPEND plugin_libs
   is_pipeline_found_bt_node
@@ -60,6 +64,8 @@ list(APPEND plugin_libs
   action_search_pipeline_bt_node
   action_inspect_pipeline_bt_node
   action_recharge_battery_bt_node
+  arm_thrusters_bt_node
+  set_guided_mode_bt_node
 )
 
 foreach(bt_plugin ${plugin_libs})

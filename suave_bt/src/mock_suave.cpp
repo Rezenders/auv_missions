@@ -27,6 +27,8 @@
 #include "suave_bt/is_pipeline_found.hpp"
 #include "suave_bt/is_pipeline_inspected.hpp"
 #include "suave_bt/is_enough_battery.hpp"
+#include "suave_bt/arm_thrusters.hpp"
+#include "suave_bt/set_guided_mode.hpp"
 #include "metacontrol_plan/is_task_feasible.hpp"
 
 int main(int argc, char * argv[])
@@ -46,6 +48,9 @@ int main(int argc, char * argv[])
   factory.registerNodeType<suave_bt::IsPipelineFound>("IsPipelineFound");
   factory.registerNodeType<suave_bt::IsPipelineInspected>("IsPipelineInspected");
   factory.registerNodeType<metacontrol_plan::IsTaskFeasible>("IsTaskFeasible");
+
+  factory.registerNodeType<suave_bt::ArmThrusters>("ArmThrusters");
+  factory.registerNodeType<suave_bt::SetGuidedMode>("SetGuidedMode");
 
   std::string pkgpath = ament_index_cpp::get_package_share_directory("suave_bt");
   std::string xml_file = pkgpath + "/bts/suave.xml";

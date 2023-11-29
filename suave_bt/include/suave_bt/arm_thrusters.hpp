@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUAVE_BT__RECHARGE_BATTERY_HPP_
-#define SUAVE_BT__RECHARGE_BATTERY_HPP_
+#ifndef SUAVE_BT__ARM_THRUSTERS_HPP_
+#define SUAVE_BT__ARM_THRUSTERS_HPP_
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/bt_factory.h"
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/bool.hpp"
+#include "mavros_msgs/srv/command_bool.hpp"
 
-#include "metacontrol_plan/metacontroled_action.hpp"
 
 namespace suave_bt
 {
 
-class RechargeBattery : public metacontrol_plan::MetacontroledAction{
+class ArmThrusters : public BT::StatefulActionNode{
 
 public:
-  RechargeBattery(const std::string& name, const BT::NodeConfig & conf);
-
-  BT::NodeStatus onStart();
+  ArmThrusters(const std::string& name, const BT::NodeConfig & conf);
 
   BT::NodeStatus onRunning() override;
+
+  BT::NodeStatus onStart() override {return BT::NodeStatus::RUNNING;};
+
+  void onHalted() override {};
 
   static BT::PortsList providedPorts()
   {
@@ -42,12 +43,11 @@ public:
       });
   }
 
-private:
-  std::chrono::system_clock::time_point _completion_time;
-
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr battery_charged_pub_;
+protected:
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Client<mavros_msgs::srv::CommandBool>::SharedPtr arm_motors_cli_;
 };
 
 }  // namespace suave_bt
 
-#endif  // SUAVE_BT__MOCK_RECHARGE_BATTERY_HPP_
+#endif  // SUAVE_BT__ARM_THRUSTERS_HPP_

@@ -44,10 +44,8 @@ public:
   }
 
 protected:
-  // std::chrono::system_clock::time_point _completion_time;
   bool _pipeline_detected;
 
-  // rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pipeline_detection_pub_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr pipeline_detection_sub_;
   void pipeline_detected_cb(const std_msgs::msg::Bool &msg);
 };
