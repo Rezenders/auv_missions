@@ -46,11 +46,10 @@ namespace suave_bt
         }
 
         if(arm_result_->success){
-          std::cout<<"Armed!"<<std::endl;
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Thrusters armed!");
           return BT::NodeStatus::SUCCESS;
         }
       } else {
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Arm motors future not completed");
         return BT::NodeStatus::FAILURE;
       }
     }

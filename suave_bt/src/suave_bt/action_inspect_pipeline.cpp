@@ -49,6 +49,7 @@ namespace suave_bt
 
     if(_pipeline_inspected==true){
       std::cout << "Async action finished: "<< this->name() << std::endl;
+      cancel_task();
       return BT::NodeStatus::SUCCESS;
     }
     std::cout<<"Inspecting pipeline! "<<std::endl;

@@ -36,6 +36,8 @@ public:
 
   BT::NodeStatus onRunning() override;
 
+  void onHalted();
+
   static BT::PortsList providedPorts()
   {
     return BT::PortsList(

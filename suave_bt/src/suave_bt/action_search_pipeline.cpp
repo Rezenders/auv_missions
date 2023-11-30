@@ -38,11 +38,16 @@ namespace suave_bt
     return metacontrol_plan::MetacontroledAction::onStart();
   }
 
+  void SearchPipeline::onHalted(){
+    metacontrol_plan::MetacontroledAction::onHalted();
+  }
+
   BT::NodeStatus SearchPipeline::onRunning(){
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     if(_pipeline_detected == true){
       std::cout << "Async action finished: "<< this->name() << std::endl;
+      cancel_task();
       return BT::NodeStatus::SUCCESS;
     }
     std::cout<<"Searching for pipeline! "<<std::endl;

@@ -58,11 +58,10 @@ namespace suave_bt
         }
 
         if(result_->mode_sent && mode_ == "GUIDED"){
-          std::cout<<"Guided!"<<std::endl;
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Mode set to GUIDED!");
           return BT::NodeStatus::SUCCESS;
         }
       } else {
-        RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Set guided motors future not completed");
         return BT::NodeStatus::FAILURE;
       }
     }
