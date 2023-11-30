@@ -9,20 +9,14 @@
           <SetGuidedMode/>
         </SequenceWithMemory>
         <SequenceWithMemory>
-          <ReactiveFallback>
-            <IsPipelineFound/>
-            <ReactiveSequence>
-              <IsTaskFeasible task_name="search_pipeline"/>
-              <search_pipeline/>
-            </ReactiveSequence>
-          </ReactiveFallback>
-          <ReactiveFallback>
-            <IsPipelineInspected/>
-            <ReactiveSequence>
-              <IsTaskFeasible task_name="inspect_pipeline"/>
-              <inspect_pipeline/>
-            </ReactiveSequence>
-          </ReactiveFallback>
+          <ReactiveSequence>
+            <IsTaskFeasible task_name="search_pipeline"/>
+            <search_pipeline/>
+          </ReactiveSequence>
+          <ReactiveSequence>
+            <IsTaskFeasible task_name="inspect_pipeline"/>
+            <inspect_pipeline/>
+          </ReactiveSequence>
         </SequenceWithMemory>
       </SequenceWithMemory>
     </RetryUntilSuccessful>
@@ -53,8 +47,6 @@
   <TreeNodesModel>
     <Action ID="ArmThrusters"
             editable="true"/>
-    <Condition ID="IsPipelineFound"/>
-    <Condition ID="IsPipelineInspected"/>
     <Condition ID="IsTaskFeasible"
                editable="true">
       <input_port name="task_name"/>
