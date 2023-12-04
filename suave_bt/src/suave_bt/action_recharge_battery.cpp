@@ -18,7 +18,7 @@ namespace suave_bt
 {
   RechargeBattery::RechargeBattery(
     const std::string& name, const BT::NodeConfig & conf)
-  : metacontrol_plan::MetacontroledAction(name, conf)
+  : rosa_plan::RosaAction(name, conf)
   {
     battery_charged_pub_  = node_->create_publisher<std_msgs::msg::Bool>(
       "/battery/charged", 10);
@@ -27,7 +27,7 @@ namespace suave_bt
   BT::NodeStatus RechargeBattery::onStart(){
     std::cout << "Async action starting: " << this->name() << std::endl;
     _completion_time = std::chrono::system_clock::now() + std::chrono::milliseconds(5000);
-    return metacontrol_plan::MetacontroledAction::onStart();
+    return rosa_plan::RosaAction::onStart();
   }
 
   BT::NodeStatus RechargeBattery::onRunning(){

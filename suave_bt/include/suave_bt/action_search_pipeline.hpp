@@ -21,13 +21,13 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 
-#include "metacontrol_plan/metacontroled_action.hpp"
+#include "rosa_plan/rosa_action.hpp"
 
 
 namespace suave_bt
 {
 
-class SearchPipeline : public metacontrol_plan::MetacontroledAction{
+class SearchPipeline : public rosa_plan::RosaAction{
 
 public:
   SearchPipeline(const std::string& name, const BT::NodeConfig & conf);

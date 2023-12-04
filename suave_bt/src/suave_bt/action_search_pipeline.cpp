@@ -20,7 +20,7 @@ namespace suave_bt
 
   SearchPipeline::SearchPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : metacontrol_plan::MetacontroledAction(name, conf), _pipeline_detected(false)
+  : rosa_plan::RosaAction(name, conf), _pipeline_detected(false)
   {
     pipeline_detection_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
       "/pipeline/detected",
@@ -35,11 +35,11 @@ namespace suave_bt
   }
 
   BT::NodeStatus SearchPipeline::onStart(){
-    return metacontrol_plan::MetacontroledAction::onStart();
+    return rosa_plan::RosaAction::onStart();
   }
 
   void SearchPipeline::onHalted(){
-    metacontrol_plan::MetacontroledAction::onHalted();
+    rosa_plan::RosaAction::onHalted();
   }
 
   BT::NodeStatus SearchPipeline::onRunning(){

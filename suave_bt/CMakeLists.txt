@@ -17,8 +17,8 @@ find_package(rclcpp REQUIRED )
 # find_package(rclcpp_action REQUIRED )
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
-find_package(metacontrol_kb_msgs REQUIRED)
-find_package(metacontrol_plan REQUIRED)
+find_package(rosa_msgs REQUIRED)
+find_package(rosa_plan REQUIRED)
 find_package(mavros_msgs REQUIRED)
 # find_package(ament_index_cpp REQUIRED)
 
@@ -39,8 +39,8 @@ set(dependencies
   mavros_msgs
   # std_srvs
   ament_index_cpp
-  metacontrol_kb_msgs
-  metacontrol_plan
+  rosa_msgs
+  rosa_plan
 )
 
 include_directories(

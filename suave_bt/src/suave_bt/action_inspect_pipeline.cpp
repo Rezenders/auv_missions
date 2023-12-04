@@ -20,7 +20,7 @@ namespace suave_bt
 
   InspectPipeline::InspectPipeline(
     const std::string& name, const BT::NodeConfig & conf)
-  : metacontrol_plan::MetacontroledAction(name, conf), _pipeline_inspected(false)
+  : rosa_plan::RosaAction(name, conf), _pipeline_inspected(false)
   {
     pipeline_inspected_sub_  = node_->create_subscription<std_msgs::msg::Bool>(
       "/pipeline/inspected",
@@ -36,11 +36,11 @@ namespace suave_bt
 
   BT::NodeStatus InspectPipeline::onStart()
   {
-    return metacontrol_plan::MetacontroledAction::onStart();
+    return rosa_plan::RosaAction::onStart();
   }
 
   void InspectPipeline::onHalted(){
-    metacontrol_plan::MetacontroledAction::onHalted();
+    rosa_plan::RosaAction::onHalted();
   }
 
   BT::NodeStatus InspectPipeline::onRunning()

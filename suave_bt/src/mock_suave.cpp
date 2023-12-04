@@ -29,7 +29,7 @@
 #include "suave_bt/is_enough_battery.hpp"
 #include "suave_bt/arm_thrusters.hpp"
 #include "suave_bt/set_guided_mode.hpp"
-#include "metacontrol_plan/is_task_feasible.hpp"
+#include "rosa_plan/is_task_feasible.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
   factory.registerNodeType<suave_bt::IsEnoughBattery>("IsEnoughBattery");
   factory.registerNodeType<suave_bt::IsPipelineFound>("IsPipelineFound");
   factory.registerNodeType<suave_bt::IsPipelineInspected>("IsPipelineInspected");
-  factory.registerNodeType<metacontrol_plan::IsTaskFeasible>("IsTaskFeasible");
+  factory.registerNodeType<rosa_plan::IsTaskFeasible>("IsTaskFeasible");
 
   factory.registerNodeType<suave_bt::ArmThrusters>("ArmThrusters");
   factory.registerNodeType<suave_bt::SetGuidedMode>("SetGuidedMode");
