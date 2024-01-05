@@ -13,7 +13,7 @@
   <!-- <depend>rclcpp_action</depend> -->
   <!-- <depend>example_interfaces</depend> -->
 
-  <depend>behaviortree_cpp</depend>
+  <depend>behaviortree_cpp_v3</depend>
   <depend>rosa_msgs</depend>
   <depend>rosa_plan</depend>
   <depend>mavros</depend>
